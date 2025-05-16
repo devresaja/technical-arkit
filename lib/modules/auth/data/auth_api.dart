@@ -23,7 +23,11 @@ class AuthApi {
     try {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? gUser =
+          await GoogleSignIn(
+            serverClientId:
+                '285255528528-6ba032blgdvlgv8kkmnt1r8eqmnna03e.apps.googleusercontent.com',
+          ).signIn();
 
       if (gUser == null) {
         return Left(null);
@@ -49,6 +53,7 @@ class AuthApi {
 
       return Right(userData);
     } catch (e) {
+      print(e);
       return Left(e.toString());
     }
   }
