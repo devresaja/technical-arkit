@@ -17,14 +17,14 @@ SystemUiOverlayStyle systemUiOverlayStyleDark = const SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.dark,
 );
 
-Widget loading({double? size}) {
+Widget loading({double? size, Color? color}) {
   return Center(
     child: SizedBox(
       height: size,
       width: size,
       child: CircularProgressIndicator.adaptive(
         backgroundColor: Colors.transparent,
-        valueColor: AlwaysStoppedAnimation(AppColor.primary),
+        valueColor: AlwaysStoppedAnimation(color ?? AppColor.primary),
         strokeWidth: 3,
       ),
     ),

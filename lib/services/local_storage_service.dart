@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:technical_artkit/shared/model/user_data.dart';
 
 class LocalStorageService {
   static const String userData = 'userData';
@@ -15,25 +16,25 @@ class LocalStorageService {
     return prefs.setBool(isDarkMode, value);
   }
 
-  // static Future<UserData?> getUserData() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final String? data = prefs.getString(userData);
+  static Future<UserData?> getUserData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? data = prefs.getString(userData);
 
-  //   if (data != null) {
-  //     final Map<String, dynamic> value = jsonDecode(data);
+    if (data != null) {
+      final Map<String, dynamic> value = jsonDecode(data);
 
-  //     return UserData.fromJson(value);
-  //   }
+      return UserData.fromJson(value);
+    }
 
-  //   return null;
-  // }
+    return null;
+  }
 
-  // static Future<bool> setUserData(UserData value) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final String data = jsonEncode(value.toJson());
+  static Future<bool> setUserData(UserData value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String data = jsonEncode(value.toJson());
 
-  //   return prefs.setString(userData, data);
-  // }
+    return prefs.setString(userData, data);
+  }
 
   static Future<void> removeValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

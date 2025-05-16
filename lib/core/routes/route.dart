@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:technical_artkit/core/error/not_found_screen.dart';
+import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
+import 'package:technical_artkit/modules/home/screen/home_screen.dart';
 
 class RouteConfig {
   static String routeName = '';
@@ -12,6 +14,12 @@ class RouteConfig {
     routeName = settings.name!;
 
     switch (settings.name) {
+      case LoginScreen.path:
+        return goTo(const LoginScreen());
+
+      case HomeScreen.path:
+        return goTo(const HomeScreen());
+
       default:
         return goTo(const NotFoundScreen());
     }

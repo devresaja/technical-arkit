@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/core/routes/route.dart';
 import 'package:technical_artkit/firebase_options.dart';
+import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
 import 'package:technical_artkit/utils/navigator_key.dart';
 
 Future<void> main() async {
@@ -22,12 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: kDebugMode,
-      title: 'Technical Artkit',
+      title: 'MiniChatApp',
       navigatorKey: navigatorKey,
       builder:
           (context, child) =>
               SafeArea(top: false, right: false, left: false, child: child!),
-      initialRoute: '/',
+      initialRoute: LoginScreen.path,
       onGenerateRoute: RouteConfig.generateRoute,
     );
   }
