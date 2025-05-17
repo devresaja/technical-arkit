@@ -44,7 +44,6 @@ class _CachedImageState extends State<CachedImage> {
 
   @override
   void dispose() {
-    _cancelToken?.cancel('Widget disposed');
     _dio.close();
     super.dispose();
   }
@@ -90,11 +89,7 @@ class _CachedImageState extends State<CachedImage> {
 
   Widget _buildEmptyWidget() {
     return const Center(
-      child: Icon(
-        Icons.broken_image,
-        color: Colors.grey,
-        size: 50,
-      ),
+      child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
     );
   }
 
@@ -201,7 +196,6 @@ class _CachedImageState extends State<CachedImage> {
       await codec.getNextFrame();
       return true;
     } catch (e) {
-      debugPrint('Invalid image: $e');
       return false;
     }
   }

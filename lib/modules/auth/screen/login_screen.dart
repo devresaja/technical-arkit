@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/modules/auth/bloc/auth_bloc.dart';
-import 'package:technical_artkit/modules/home/screen/home_screen.dart';
+import 'package:technical_artkit/modules/chat/screen/chat_screen.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
 import 'package:technical_artkit/widget/button/custom_button.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (state is LoginByGoogleLoadedState) {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      HomeScreen.path,
+                      ChatScreen.path,
                       (route) => false,
                     );
                   } else if (state is LoginByGoogleFailedState) {

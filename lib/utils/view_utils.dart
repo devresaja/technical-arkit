@@ -17,6 +17,8 @@ SystemUiOverlayStyle systemUiOverlayStyleDark = const SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.dark,
 );
 
+Widget buildCustomEmpty() => Center(child: TextWidget('Start a conversation'));
+
 Widget loading({double? size, Color? color}) {
   return Center(
     child: SizedBox(

@@ -6,7 +6,7 @@ import 'package:technical_artkit/widget/image/svg_ui.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
 import 'package:flutter/material.dart';
 
-enum ViewMode { loading, loaded, empty, failed, loadMore, loadMax }
+enum ViewMode { loading, loaded, empty, error, loadMore, loadMax }
 
 class ViewHandlerWidget extends StatefulWidget {
   final ViewMode viewMode;
@@ -34,6 +34,7 @@ class _ViewHandlerWidgetState extends State<ViewHandlerWidget> {
       case ViewMode.loading:
         return widget.customLoading ?? loading();
       case ViewMode.loaded || ViewMode.loadMore || ViewMode.loadMax:
+        print('masuk sini');
         return widget.child;
       case ViewMode.empty:
         return Center(
@@ -49,7 +50,7 @@ class _ViewHandlerWidgetState extends State<ViewHandlerWidget> {
                 ],
               ),
         );
-      case ViewMode.failed:
+      case ViewMode.error:
         return Center(
           child:
               widget.customFailed ??

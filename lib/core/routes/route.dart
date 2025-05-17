@@ -1,9 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:technical_artkit/core/error/not_found_screen.dart';
 import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
-import 'package:technical_artkit/modules/home/screen/home_screen.dart';
+import 'package:technical_artkit/modules/chat/screen/all_user_screen.dart';
+import 'package:technical_artkit/modules/chat/screen/chat_screen.dart';
+import 'package:technical_artkit/modules/chat/screen/chat_detail_screen.dart';
 
 class RouteConfig {
   static String routeName = '';
@@ -17,8 +18,14 @@ class RouteConfig {
       case LoginScreen.path:
         return goTo(const LoginScreen());
 
-      case HomeScreen.path:
-        return goTo(const HomeScreen());
+      case ChatScreen.path:
+        return goTo(const ChatScreen());
+
+      case ChatDetailScreen.path:
+        return goTo(ChatDetailScreen(argument: argument as ChatDetailArgument));
+
+      case AllUserScreen.routeName:
+        return goTo(const AllUserScreen());
 
       default:
         return goTo(const NotFoundScreen());
