@@ -5,20 +5,6 @@ sealed class ChatState {}
 
 class ChatInitial extends ChatState {}
 
-class GetAllUsersLoadingState extends ChatState {}
-
-class GetAllUsersLoadedState extends ChatState {
-  final List<UserData> users;
-
-  GetAllUsersLoadedState(this.users);
-}
-
-class GetAllUsersErrorState extends ChatState {
-  final String error;
-
-  GetAllUsersErrorState(this.error);
-}
-
 class SendChatLoadingState extends ChatState {}
 
 class SendChatLoadedState extends ChatState {

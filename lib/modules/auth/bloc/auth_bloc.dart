@@ -14,11 +14,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginByGoogleEvent>(_loginByGoogle);
   }
 
-  _logout(AuthEvent event, Emitter<AuthState> emit) async {
+  _logout(LogoutEvent event, Emitter<AuthState> emit) async {
     emit(LogoutLoadingState());
 
     try {
-      final response = await _api.logout();
+      final response = await _api.logout(userId: event.userId);
 
       response.fold(
         (left) => emit(LogoutFailedState(response.left.toString())),
@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _loginByGoogle(AuthEvent event, Emitter<AuthState> emit) async {
+  _loginByGoogle(LoginByGoogleEvent event, Emitter<AuthState> emit) async {
     emit(LoginByGoogleLoadingState());
 
     try {
@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         },
         (userData) async {
           final updateResponse = await _api.updateUserData(
-            userData.userId!,
+            userData.userId,
             userData.toJson(),
           );
 

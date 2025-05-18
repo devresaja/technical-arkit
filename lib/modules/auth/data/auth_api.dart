@@ -8,8 +8,13 @@ import 'package:technical_artkit/shared/model/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthApi {
-  Future<Either<String, bool>> logout() async {
+  Future<Either<String, bool>> logout({required String userId}) async {
     try {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'is_online': false,
+        'last_online': FieldValue.serverTimestamp(),
+      });
+
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
       await LocalStorageService.removeValue();
@@ -47,13 +52,13 @@ class AuthApi {
         name: data.user!.displayName ?? '-',
         email: data.user!.email ?? '-',
         avatar: data.user!.photoURL,
+        isOnline: true,
       );
 
       await LocalStorageService.setUserData(userData);
 
       return Right(userData);
     } catch (e) {
-      print(e);
       return Left(e.toString());
     }
   }
@@ -63,10 +68,12 @@ class AuthApi {
     Map<String, dynamic> data,
   ) async {
     try {
+      data['last_online'] = FieldValue.serverTimestamp();
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
-          .set(data);
+          .set(data, SetOptions(merge: true));
       return Right(true);
     } catch (e) {
       return Left(e.toString());

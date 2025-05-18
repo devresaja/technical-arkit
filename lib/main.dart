@@ -5,11 +5,14 @@ import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/core/routes/route.dart';
 import 'package:technical_artkit/firebase_options.dart';
 import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
+import 'package:technical_artkit/services/app_lifecycle_service.dart';
 import 'package:technical_artkit/utils/navigator_key.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  AppLifecycleService.instance.initialize();
 
   AppColor.init(false);
 

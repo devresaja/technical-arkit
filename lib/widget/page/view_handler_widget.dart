@@ -34,7 +34,6 @@ class _ViewHandlerWidgetState extends State<ViewHandlerWidget> {
       case ViewMode.loading:
         return widget.customLoading ?? loading();
       case ViewMode.loaded || ViewMode.loadMore || ViewMode.loadMax:
-        print('masuk sini');
         return widget.child;
       case ViewMode.empty:
         return Center(

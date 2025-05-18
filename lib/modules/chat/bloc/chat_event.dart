@@ -3,12 +3,6 @@ part of 'chat_bloc.dart';
 @immutable
 sealed class ChatEvent {}
 
-class GetAllUsersEvent extends ChatEvent {
-  final String currentUserId;
-
-  GetAllUsersEvent({required this.currentUserId});
-}
-
 class SendChatEvent extends ChatEvent {
   final String? chatroomId;
   final String currentUserId;

@@ -105,12 +105,29 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedImage(
-                    key: Key(chatRoom.id),
-                    imageUrl: chatRoom.otherUser.avatar,
-                    isCircle: true,
-                    height: 40,
-                    width: 40,
+                  Stack(
+                    children: [
+                      CachedImage(
+                        key: Key(chatRoom.id),
+                        imageUrl: chatRoom.otherUser.avatar,
+                        isCircle: true,
+                        height: 40,
+                        width: 40,
+                      ),
+                      if (chatRoom.otherUser.isOnline)
+                        Positioned(
+                          right: 1,
+                          bottom: 1,
+                          child: Container(
+                            width: 11,
+                            height: 11,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   divideW12,
                   Expanded(

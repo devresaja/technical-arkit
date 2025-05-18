@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/utils/navigator_key.dart';
@@ -6,6 +7,40 @@ import 'package:technical_artkit/widget/page/view_handler_widget.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+String formatLastOnline(dynamic lastOnline) {
+  if (lastOnline == null) return '';
+
+  DateTime? lastOnlineDateTime;
+
+  try {
+    if (lastOnline is Timestamp) {
+      lastOnlineDateTime = lastOnline.toDate();
+    } else if (lastOnline is String) {
+      lastOnlineDateTime = DateTime.parse(lastOnline);
+    } else if (lastOnline is DateTime) {
+      lastOnlineDateTime = lastOnline;
+    } else {
+      return 'Unknown';
+    }
+
+    final now = DateTime.now();
+    final difference = now.difference(lastOnlineDateTime);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inHours < 1) {
+      return '${difference.inMinutes} min${difference.inMinutes == 1 ? '' : 's'} ago';
+    } else if (difference.inDays < 1) {
+      return DateFormat('HH:mm').format(lastOnlineDateTime);
+    } else {
+      return DateFormat('MMM d, yyyy, HH:mm').format(lastOnlineDateTime);
+    }
+  } catch (e) {
+    return lastOnline.toString();
+  }
+}
 
 SystemUiOverlayStyle systemUiOverlayStyleLight = const SystemUiOverlayStyle(
   statusBarColor: Colors.transparent,

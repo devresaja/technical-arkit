@@ -5,9 +5,9 @@ import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
 import 'package:technical_artkit/modules/chat/model/chat_message.dart';
+import 'package:technical_artkit/modules/profile/components/user_profile_widget.dart';
 import 'package:technical_artkit/shared/model/user_data.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
-import 'package:technical_artkit/widget/image/cached_image.dart';
 import 'package:technical_artkit/widget/page/view_handler_widget.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
 import 'package:intl/intl.dart';
@@ -69,17 +69,10 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Row(
-          children: [
-            CachedImage(
-              imageUrl: widget.argument.otherUser.avatar,
-              isCircle: true,
-              height: 30,
-              width: 30,
-            ),
-            divideW12,
-            TextWidget(widget.argument.otherUser.name, weight: FontWeight.w500),
-          ],
+        title: UserProfileWidget(
+          userId: widget.argument.otherUser.userId,
+          imageSize: 30,
+          fontWeight: FontWeight.w500,
         ),
       ),
       body: Column(

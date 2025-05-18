@@ -29,6 +29,19 @@ class ChatApi {
     }
   }
 
+  Stream<List<UserData>> streamAllUsers(String currentUserId) {
+    return _firestore
+        .collection('users')
+        .where(FieldPath.documentId, isNotEqualTo: currentUserId)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            final data = doc.data();
+            return UserData.fromJson(data);
+          }).toList();
+        });
+  }
+
   Future<Either<String, String?>> getChatroomId(
     String currentUserId,
     String otherUserId,
