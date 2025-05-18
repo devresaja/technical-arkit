@@ -178,6 +178,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           Expanded(
             child: TextField(
               controller: _chatController,
+              style: TextStyle(color: AppColor.black),
               decoration: InputDecoration(hintText: 'Type a message'),
             ),
           ),

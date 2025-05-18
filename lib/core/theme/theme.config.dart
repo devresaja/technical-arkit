@@ -12,7 +12,10 @@ ThemeData themeConfig({required bool isBlueMode, bool? useMaterial3}) {
     brightness: isBlueMode ? Brightness.dark : Brightness.light,
     inputDecorationTheme: inputDecorationTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColor.primary),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColor.primary,
+      selectionHandleColor: AppColor.primary,
+    ),
   );
 }
 
