@@ -6,7 +6,7 @@ class LocalStorageService {
 
   static Future<bool> getIsBlueMode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(isBlueMode) ?? false;
+    return prefs.getBool(isBlueMode) ?? true;
   }
 
   static Future<bool> setIsBlueMode(bool value) async {
