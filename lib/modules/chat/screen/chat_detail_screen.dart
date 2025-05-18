@@ -7,17 +7,16 @@ import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
 import 'package:technical_artkit/modules/chat/model/chat_message.dart';
 import 'package:technical_artkit/modules/profile/components/user_profile_widget.dart';
 import 'package:technical_artkit/modules/profile/screen/profile_screen.dart';
-import 'package:technical_artkit/shared/model/user_data.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
 import 'package:technical_artkit/widget/page/view_handler_widget.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
-import 'package:intl/intl.dart';
+import 'package:technical_artkit/modules/chat/widget/chat_message_item.dart';
 
 class ChatDetailArgument {
   final String? chatroomId;
-  final UserData otherUser;
+  final String otherUserId;
 
-  ChatDetailArgument({this.chatroomId, required this.otherUser});
+  ChatDetailArgument({this.chatroomId, required this.otherUserId});
 }
 
 class ChatDetailScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       _chatBloc.add(
         GetChatroomIdEvent(
           currentUserId: _currentUserId,
-          otherUserId: widget.argument.otherUser.userId,
+          otherUserId: widget.argument.otherUserId,
         ),
       );
     }
@@ -71,7 +70,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: UserProfileWidget(
-          userId: widget.argument.otherUser.userId,
+          userId: widget.argument.otherUserId,
           imageSize: 30,
           fontWeight: FontWeight.w500,
           titleColor: AppColor.white,
@@ -80,9 +79,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             Navigator.pushNamed(
               context,
               ProfileScreen.path,
-              arguments: ProfileArgument(
-                userId: widget.argument.otherUser.userId,
-              ),
+              arguments: ProfileArgument(userId: widget.argument.otherUserId),
             );
           },
         ),
@@ -163,53 +160,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           return Container();
         }
 
-        return Align(
-          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin:
-                    isMe
-                        ? const EdgeInsets.only(top: 12, right: 8)
-                        : const EdgeInsets.only(top: 12, left: 8),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isMe ? Colors.blue : Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  crossAxisAlignment:
-                      isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextWidget(
-                      message.sender.name,
-                      color: isMe ? AppColor.white : AppColor.black,
-                      weight: FontWeight.bold,
-                    ),
-                    divide4,
-                    TextWidget(
-                      message.content,
-                      color: isMe ? AppColor.white : AppColor.black,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    isMe
-                        ? const EdgeInsets.only(right: 12, top: 4)
-                        : const EdgeInsets.only(left: 12, top: 4),
-                child: TextWidget(
-                  DateFormat.jm().format(message.timestamp!),
-                  fontSize: 10,
-                  color: AppColor.black,
-                ),
-              ),
-            ],
-          ),
+        return ChatMessageItem(
+          isMe: isMe,
+          senderName: message.sender.name,
+          content: message.content,
+          timestamp: message.timestamp!,
         );
       },
     );
@@ -236,7 +191,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   SendChatEvent(
                     chatroomId: _chatroomId,
                     currentUserId: _currentUserId,
-                    otherUserId: widget.argument.otherUser.userId,
+                    otherUserId: widget.argument.otherUserId,
                     content: _chatController.text,
                   ),
                 );

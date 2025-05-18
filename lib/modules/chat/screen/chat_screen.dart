@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/core/theme/bloc/theme_bloc.dart';
 import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
@@ -11,8 +9,8 @@ import 'package:technical_artkit/modules/chat/screen/all_user_screen.dart';
 import 'package:technical_artkit/modules/chat/screen/chat_detail_screen.dart';
 import 'package:technical_artkit/modules/profile/screen/profile_screen.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
-import 'package:technical_artkit/widget/image/cached_image.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
+import 'package:technical_artkit/modules/chat/widget/chat_room_item.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String path = '/chat';
@@ -109,87 +107,23 @@ class _ChatScreenState extends State<ChatScreen> {
           return Container();
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          switchInCurve: Curves.easeIn,
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                ChatDetailScreen.path,
-                arguments: ChatDetailArgument(
-                  chatroomId: chatRoom.id,
-                  otherUser: chatRoom.otherUser,
-                ),
-              );
-            },
-            child: Ink(
-              padding: const EdgeInsets.all(16),
-              child: IntrinsicHeight(
-                child: Row(
-                  children: [
-                    Stack(
-                      children: [
-                        CachedImage(
-                          key: Key(chatRoom.id),
-                          imageUrl: chatRoom.otherUser.avatar,
-                          isCircle: true,
-                          height: 40,
-                          width: 40,
-                        ),
-                        if (chatRoom.otherUser.isOnline)
-                          Positioned(
-                            right: 1,
-                            bottom: 1,
-                            child: Container(
-                              width: 11,
-                              height: 11,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.green,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    divideW12,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextWidget(
-                            chatRoom.otherUser.name,
-                            color: AppColor.black,
-                            fontSize: 16,
-                            weight: FontWeight.bold,
-                            maxLines: 1,
-                            ellipsed: true,
-                          ),
-                          TextWidget(
-                            chatRoom.lastMessage,
-                            color: AppColor.black,
-                            maxLines: 1,
-                            ellipsed: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        TextWidget(
-                          DateFormat.jm().format(chatRoom.lastMessageTime!),
-                          fontSize: 10,
-                          color: AppColor.black,
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  ],
-                ),
+        return ChatRoomItem(
+          chatRoomId: chatRoom.id,
+          avatarUrl: chatRoom.otherUser.avatar,
+          isOnline: chatRoom.otherUser.isOnline,
+          name: chatRoom.otherUser.name,
+          lastMessage: chatRoom.lastMessage,
+          lastMessageTime: chatRoom.lastMessageTime!,
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              ChatDetailScreen.path,
+              arguments: ChatDetailArgument(
+                chatroomId: chatRoom.id,
+                otherUserId: chatRoom.otherUser.userId,
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

@@ -57,38 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isVertical: true,
                         ),
                         divide36,
-                        if (widget.argument.isMe)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  TextWidget(
-                                    'App Theme: ',
-                                    fontSize: 16,
-                                    weight: FontWeight.bold,
-                                  ),
-                                  TextWidget(
-                                    context.read<ThemeBloc>().state.isBlueMode
-                                        ? 'Blue'
-                                        : 'Pink',
-                                    fontSize: 16,
-                                    weight: FontWeight.bold,
-                                    color: AppColor.primary,
-                                  ),
-                                ],
-                              ),
-                              CustomSwitchButton(
-                                value:
-                                    context.read<ThemeBloc>().state.isBlueMode,
-                                onChanged: (value) {
-                                  context.read<ThemeBloc>().add(
-                                    UpdateThemeEvent(isBlueMode: value),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                        if (widget.argument.isMe) _buildThemeSwitch(),
                       ],
                     ),
                   ),
@@ -99,6 +68,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         );
       },
+    );
+  }
+
+  Row _buildThemeSwitch() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            TextWidget('App Theme: ', fontSize: 16, weight: FontWeight.bold),
+            TextWidget(
+              context.read<ThemeBloc>().state.isBlueMode ? 'Blue' : 'Pink',
+              fontSize: 16,
+              weight: FontWeight.bold,
+              color: AppColor.primary,
+            ),
+          ],
+        ),
+        CustomSwitchButton(
+          value: context.read<ThemeBloc>().state.isBlueMode,
+          onChanged: (value) {
+            context.read<ThemeBloc>().add(UpdateThemeEvent(isBlueMode: value));
+          },
+        ),
+      ],
     );
   }
 

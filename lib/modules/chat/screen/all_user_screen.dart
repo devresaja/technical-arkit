@@ -2,14 +2,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
-import 'package:technical_artkit/modules/chat/screen/chat_detail_screen.dart';
 import 'package:technical_artkit/shared/model/user_data.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
-import 'package:technical_artkit/widget/image/cached_image.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
+import 'package:technical_artkit/modules/chat/widget/chat_user_item.dart';
 
 class AllUserScreen extends StatefulWidget {
   const AllUserScreen({super.key});
@@ -89,13 +87,13 @@ class _AllUserScreenState extends State<AllUserScreen> {
         // Online users section
         if (onlineUsers.isNotEmpty) ...[
           _buildGroupHeader('Online Users'),
-          ...onlineUsers.map((user) => _buildUserItem(user)),
+          ...onlineUsers.map((user) => ChatUserItem(user: user)),
         ],
 
         // Offline users section
         if (offlineUsers.isNotEmpty) ...[
           _buildGroupHeader('Offline Users'),
-          ...offlineUsers.map((user) => _buildUserItem(user)),
+          ...offlineUsers.map((user) => ChatUserItem(user: user)),
         ],
       ],
     );
@@ -110,58 +108,6 @@ class _AllUserScreenState extends State<AllUserScreen> {
         weight: FontWeight.bold,
         color: AppColor.black,
       ),
-    );
-  }
-
-  Widget _buildUserItem(UserData user) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              ChatDetailScreen.path,
-              arguments: ChatDetailArgument(otherUser: user),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Row(
-              children: [
-                CachedImage(
-                  imageUrl: user.avatar,
-                  isCircle: true,
-                  height: 40,
-                  width: 40,
-                ),
-                divideW12,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextWidget(user.name, weight: FontWeight.bold),
-                      divide6,
-                      TextWidget(
-                        user.isOnline
-                            ? 'Online'
-                            : 'Last online: ${formatLastOnline(user.lastOnline)}',
-                        fontSize: 12,
-                        color: user.isOnline ? Colors.green : Colors.grey,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 16),
-          height: 1,
-          width: double.infinity,
-          color: Colors.grey.shade300,
-        ),
-      ],
     );
   }
 }
