@@ -74,6 +74,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           userId: widget.argument.otherUser.userId,
           imageSize: 30,
           fontWeight: FontWeight.w500,
+          titleColor: AppColor.white,
+          onlineStatusColor: AppColor.white,
           onTap: () {
             Navigator.pushNamed(
               context,
@@ -221,12 +223,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           Expanded(
             child: TextField(
               controller: _chatController,
-              decoration: InputDecoration(
-                hintText: 'Type a message',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Type a message'),
             ),
           ),
           divideW12,

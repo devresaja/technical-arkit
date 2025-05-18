@@ -48,7 +48,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: TextWidget('All Users'), titleSpacing: 0),
+      appBar: AppBar(title: Text('All Users'), titleSpacing: 0),
       body: BlocProvider(create: (context) => _chatBloc, child: _buildView()),
     );
   }
@@ -128,28 +128,11 @@ class _AllUserScreenState extends State<AllUserScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
-                Stack(
-                  children: [
-                    CachedImage(
-                      imageUrl: user.avatar,
-                      isCircle: true,
-                      height: 40,
-                      width: 40,
-                    ),
-                    if (user.isOnline)
-                      Positioned(
-                        right: 1,
-                        bottom: 1,
-                        child: Container(
-                          width: 11,
-                          height: 11,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                  ],
+                CachedImage(
+                  imageUrl: user.avatar,
+                  isCircle: true,
+                  height: 40,
+                  width: 40,
                 ),
                 divideW12,
                 Expanded(
@@ -157,6 +140,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextWidget(user.name, weight: FontWeight.bold),
+                      divide6,
                       TextWidget(
                         user.isOnline
                             ? 'Online'

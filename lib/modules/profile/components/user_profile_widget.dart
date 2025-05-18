@@ -18,6 +18,8 @@ class UserProfileWidget extends StatefulWidget {
   final FontWeight fontWeight;
   final bool isVertical;
   final VoidCallback? onTap;
+  final Color? titleColor;
+  final Color? onlineStatusColor;
 
   const UserProfileWidget({
     super.key,
@@ -28,6 +30,8 @@ class UserProfileWidget extends StatefulWidget {
     this.fontWeight = FontWeight.w500,
     this.isVertical = false,
     this.onTap,
+    this.titleColor,
+    this.onlineStatusColor,
   });
 
   @override
@@ -223,7 +227,7 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
               height: widget.imageSize,
               width: widget.imageSize,
             ),
-            divide8,
+            divide12,
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -232,6 +236,7 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                   weight: widget.fontWeight,
                   fontSize: widget.fontSize,
                 ),
+                divide12,
                 if (widget.showOnlineStatus)
                   TextWidget(
                     user.isOnline
@@ -268,12 +273,16 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                 ellipsed: true,
                 weight: widget.fontWeight,
                 fontSize: widget.fontSize,
+                color: widget.titleColor,
               ),
+              divide4,
               if (widget.showOnlineStatus)
                 TextWidget(
                   user.isOnline ? 'Online' : formatLastOnline(user.lastOnline),
                   fontSize: widget.fontSize - 2,
-                  color: user.isOnline ? Colors.green : Colors.grey,
+                  color:
+                      widget.onlineStatusColor ??
+                      (user.isOnline ? Colors.green : Colors.grey),
                 ),
             ],
           ),

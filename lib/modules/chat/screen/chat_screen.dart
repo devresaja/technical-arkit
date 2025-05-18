@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:technical_artkit/constant/divider.dart';
 import 'package:technical_artkit/core/theme/app_color.dart';
+import 'package:technical_artkit/core/theme/bloc/theme_bloc.dart';
 import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
 import 'package:technical_artkit/modules/chat/model/chatroom.dart';
 import 'package:technical_artkit/modules/chat/screen/all_user_screen.dart';
@@ -32,43 +33,47 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextWidget('Chat'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                ProfileScreen.path,
-                arguments: ProfileArgument(
-                  userId: FirebaseAuth.instance.currentUser!.uid,
-                  isMe: true,
-                ),
-              );
-            },
-            icon: Icon(Icons.account_circle, size: 28),
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Chat'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    ProfileScreen.path,
+                    arguments: ProfileArgument(
+                      userId: FirebaseAuth.instance.currentUser!.uid,
+                      isMe: true,
+                    ),
+                  );
+                },
+                icon: Icon(Icons.account_circle, size: 28),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: BlocProvider(
-        create: (context) => _chatBloc,
-        child: BlocBuilder<ChatBloc, ChatState>(
-          builder: (context, state) {
-            return _buildView();
-          },
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: FloatingActionButton(
-          backgroundColor: AppColor.primary,
-          onPressed: () {
-            Navigator.pushNamed(context, AllUserScreen.routeName);
-          },
-          child: Icon(Icons.message, color: AppColor.white),
-        ),
-      ),
+          body: BlocProvider(
+            create: (context) => _chatBloc,
+            child: BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                return _buildView();
+              },
+            ),
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: FloatingActionButton(
+              backgroundColor: AppColor.primary,
+              onPressed: () {
+                Navigator.pushNamed(context, AllUserScreen.routeName);
+              },
+              child: Icon(Icons.message, color: Colors.white),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -120,65 +125,68 @@ class _ChatScreenState extends State<ChatScreen> {
             },
             child: Ink(
               padding: const EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      CachedImage(
-                        key: Key(chatRoom.id),
-                        imageUrl: chatRoom.otherUser.avatar,
-                        isCircle: true,
-                        height: 40,
-                        width: 40,
-                      ),
-                      if (chatRoom.otherUser.isOnline)
-                        Positioned(
-                          right: 1,
-                          bottom: 1,
-                          child: Container(
-                            width: 11,
-                            height: 11,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Stack(
+                      children: [
+                        CachedImage(
+                          key: Key(chatRoom.id),
+                          imageUrl: chatRoom.otherUser.avatar,
+                          isCircle: true,
+                          height: 40,
+                          width: 40,
+                        ),
+                        if (chatRoom.otherUser.isOnline)
+                          Positioned(
+                            right: 1,
+                            bottom: 1,
+                            child: Container(
+                              width: 11,
+                              height: 11,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green,
+                              ),
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-                  divideW12,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextWidget(
-                          chatRoom.otherUser.name,
-                          color: AppColor.black,
-                          fontSize: 16,
-                          weight: FontWeight.bold,
-                          maxLines: 1,
-                          ellipsed: true,
-                        ),
-                        TextWidget(
-                          chatRoom.lastMessage,
-                          color: AppColor.black,
-                          maxLines: 1,
-                          ellipsed: true,
-                        ),
                       ],
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: TextWidget(
-                      DateFormat.jm().format(chatRoom.lastMessageTime!),
-                      fontSize: 10,
-                      color: AppColor.black,
+                    divideW12,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextWidget(
+                            chatRoom.otherUser.name,
+                            color: AppColor.black,
+                            fontSize: 16,
+                            weight: FontWeight.bold,
+                            maxLines: 1,
+                            ellipsed: true,
+                          ),
+                          TextWidget(
+                            chatRoom.lastMessage,
+                            color: AppColor.black,
+                            maxLines: 1,
+                            ellipsed: true,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Column(
+                      children: [
+                        TextWidget(
+                          DateFormat.jm().format(chatRoom.lastMessageTime!),
+                          fontSize: 10,
+                          color: AppColor.black,
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

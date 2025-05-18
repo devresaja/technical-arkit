@@ -55,8 +55,6 @@ class AuthApi {
         isOnline: true,
       );
 
-      await LocalStorageService.setUserData(userData);
-
       return Right(userData);
     } catch (e) {
       return Left(e.toString());

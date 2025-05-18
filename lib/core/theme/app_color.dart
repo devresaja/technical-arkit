@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   static AppColorBase? _theme;
-  static final _darkColor = DarkColor();
-  static final _lightColor = LightColor();
+  static final _blueColor = BlueColor();
+  static final _pinkColor = PinkColor();
 
   AppColor._();
 
   static AppColorBase get instance {
-    _theme ??= DarkColor();
+    _theme ??= BlueColor();
     return _theme!;
   }
 
-  static void init(bool isDarkMode) {
-    _theme = isDarkMode ? _darkColor : _lightColor;
+  static void init(bool isBlueMode) {
+    _theme = isBlueMode ? _blueColor : _pinkColor;
   }
 
   static void updateTheme() {
-    final newTheme = _theme is DarkColor ? _lightColor : _darkColor;
+    final newTheme = _theme is BlueColor ? _pinkColor : _blueColor;
     _theme = newTheme;
   }
 
@@ -44,7 +44,7 @@ abstract class AppColorBase {
   Color get whiteAccent;
 }
 
-class LightColor implements AppColorBase {
+class BlueColor implements AppColorBase {
   @override
   Color primary = Colors.blue;
   @override
@@ -65,23 +65,23 @@ class LightColor implements AppColorBase {
   Color whiteAccent = const Color.fromARGB(255, 114, 110, 110);
 }
 
-class DarkColor implements AppColorBase {
+class PinkColor implements AppColorBase {
   @override
-  Color primary = Colors.blue;
+  Color primary = Colors.pinkAccent;
   @override
-  Color secondary = const Color(0xff0e0f0f);
+  Color secondary = const Color.fromARGB(255, 247, 247, 247);
   @override
-  Color secondaryAccent = const Color.fromARGB(255, 24, 24, 24);
+  Color secondaryAccent = const Color.fromARGB(255, 234, 232, 232);
   @override
-  Color accent = const Color(0xffa7a2a2);
+  Color accent = const Color.fromARGB(255, 59, 73, 80);
   @override
   Color error = Colors.red;
   @override
   Color errorText = const Color(0xffff3131);
   @override
-  Color white = Colors.black;
+  Color white = Colors.white;
   @override
-  Color black = Colors.white;
+  Color black = Colors.black;
   @override
-  Color whiteAccent = const Color.fromARGB(255, 232, 225, 225);
+  Color whiteAccent = const Color.fromARGB(255, 114, 110, 110);
 }

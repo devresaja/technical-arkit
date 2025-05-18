@@ -59,10 +59,6 @@ class _CustomSwitchButtonState extends State<CustomSwitchButton> {
   }
 
   Color _getBackgroundColor() {
-    return widget.isLoading
-        ? Colors.transparent
-        : widget.value
-        ? AppColor.primary
-        : Color.fromARGB(255, 213, 215, 218);
+    return widget.isLoading ? Colors.transparent : AppColor.primary;
   }
 }
