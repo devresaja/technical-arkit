@@ -9,7 +9,7 @@ import 'package:technical_artkit/widget/text/text_widget.dart';
 class ChatUserItem extends StatelessWidget {
   final UserData user;
 
-  const ChatUserItem({Key? key, required this.user}) : super(key: key);
+  const ChatUserItem({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

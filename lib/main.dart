@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +8,11 @@ import 'package:technical_artkit/core/theme/bloc/theme_bloc.dart';
 import 'package:technical_artkit/core/theme/theme.config.dart';
 import 'package:technical_artkit/firebase_options.dart';
 import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
+import 'package:technical_artkit/modules/chat/screen/chat_screen.dart';
 import 'package:technical_artkit/services/app_lifecycle_service.dart';
 import 'package:technical_artkit/services/local_storage_service.dart';
 import 'package:technical_artkit/utils/navigator_key.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +54,6 @@ class _MyAppState extends State<MyApp> {
         buildWhen:
             (previous, current) => previous.isBlueMode != current.isBlueMode,
         builder: (context, state) {
-          log('isBlueMode: ${widget.isBlueMode}');
           return MaterialApp(
             debugShowCheckedModeBanner: kDebugMode,
             title: 'MiniChatApp',
@@ -67,7 +66,16 @@ class _MyAppState extends State<MyApp> {
                   left: false,
                   child: child!,
                 ),
-            home: LoginScreen(),
+            home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return const ChatScreen();
+                } else {
+                  return const LoginScreen();
+                }
+              },
+            ),
             onGenerateRoute: RouteConfig.generateRoute,
           );
         },
