@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show Timestamp;
 import 'package:technical_artkit/shared/model/user_data.dart';
 
 class ChatMessage {
@@ -19,6 +19,7 @@ class ChatMessage {
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
+    final raw = json['timestamp'];
     return ChatMessage(
       id: json['id'] ?? '',
       sender:
@@ -31,19 +32,23 @@ class ChatMessage {
                 avatar: null,
               ),
       content: json['content'] ?? '',
-      timestamp: (json['timestamp'] as Timestamp?)?.toDate(),
+      timestamp:
+          raw is DateTime
+              ? raw
+              : raw is Timestamp
+              ? raw.toDate()
+              : null,
       read: json['read'] ?? false,
       type: json['type'] ?? 'text',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'sender': sender.toJson(),
-      'content': content,
-      'timestamp': timestamp,
-      'read': read,
-      'type': type,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'sender': sender.toJson(),
+    'content': content,
+    'timestamp': timestamp,
+    'read': read,
+    'type': type,
+  };
 }

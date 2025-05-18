@@ -17,48 +17,30 @@ class UserData {
     this.lastOnline,
   });
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'user_id': userId,
-      'name': name,
-      'email': email,
-      'avatar': avatar,
-      'is_online': isOnline,
-      'last_online': lastOnline,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'user_id': userId,
+    'name': name,
+    'email': email,
+    'avatar': avatar,
+    'is_online': isOnline,
+    'last_online': lastOnline,
+  };
 
   factory UserData.fromJson(Map<String, dynamic> map) {
+    final raw = map['last_online'];
     return UserData(
-      userId: map['user_id'] as String,
-      name: map['name'] as String,
-      email: map['email'] as String,
-      avatar: map['avatar'] as String?,
+      userId: map['user_id'] ?? '',
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      avatar: map['avatar'],
       isOnline: map['is_online'] as bool? ?? false,
-      lastOnline: (map['last_online'] as Timestamp?)?.toDate(),
+      lastOnline:
+          raw is DateTime
+              ? raw
+              : raw is Timestamp
+              ? raw.toDate()
+              : null,
     );
-  }
-
-  @override
-  bool operator ==(covariant UserData other) {
-    if (identical(this, other)) return true;
-
-    return other.userId == userId &&
-        other.name == name &&
-        other.email == email &&
-        other.avatar == avatar &&
-        other.isOnline == isOnline &&
-        other.lastOnline == lastOnline;
-  }
-
-  @override
-  int get hashCode {
-    return userId.hashCode ^
-        name.hashCode ^
-        email.hashCode ^
-        avatar.hashCode ^
-        isOnline.hashCode ^
-        lastOnline.hashCode;
   }
 
   UserData copyWith({
@@ -67,15 +49,13 @@ class UserData {
     String? email,
     String? avatar,
     bool? isOnline,
-    dynamic lastOnline,
-  }) {
-    return UserData(
-      userId: userId ?? this.userId,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      avatar: avatar ?? this.avatar,
-      isOnline: isOnline ?? this.isOnline,
-      lastOnline: lastOnline ?? this.lastOnline,
-    );
-  }
+    DateTime? lastOnline,
+  }) => UserData(
+    userId: userId ?? this.userId,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    avatar: avatar ?? this.avatar,
+    isOnline: isOnline ?? this.isOnline,
+    lastOnline: lastOnline ?? this.lastOnline,
+  );
 }

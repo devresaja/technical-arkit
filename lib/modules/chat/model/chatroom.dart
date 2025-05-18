@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show Timestamp;
 import 'package:technical_artkit/shared/model/user_data.dart';
 
 class ChatRoom {
@@ -17,22 +17,33 @@ class ChatRoom {
   });
 
   factory ChatRoom.fromJson(Map<String, dynamic> json) {
+    final rawLast = json['last_message_time'];
+    final rawCreate = json['created_at'];
+
     return ChatRoom(
       id: json['id'] ?? '',
       lastMessage: json['last_message'] ?? '',
-      lastMessageTime: (json['last_message_time'] as Timestamp?)?.toDate(),
-      createdAt: (json['created_at'] as Timestamp?)?.toDate(),
-      otherUser: UserData.fromJson(json['other_user']),
+      lastMessageTime:
+          rawLast is DateTime
+              ? rawLast
+              : rawLast is Timestamp
+              ? rawLast.toDate()
+              : null,
+      createdAt:
+          rawCreate is DateTime
+              ? rawCreate
+              : rawCreate is Timestamp
+              ? rawCreate.toDate()
+              : null,
+      otherUser: UserData.fromJson(json['other_user'] ?? {}),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'last_message': lastMessage,
-      'last_message_time': lastMessageTime,
-      'created_at': createdAt,
-      'other_user': otherUser.toJson(),
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'last_message': lastMessage,
+    'last_message_time': lastMessageTime,
+    'created_at': createdAt,
+    'other_user': otherUser.toJson(),
+  };
 }
