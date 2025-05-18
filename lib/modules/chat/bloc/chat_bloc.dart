@@ -22,12 +22,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return _api.streamChatrooms(userId);
   }
 
-  StreamController<List<UserData>> streamAllUsers(String currentUserId) {
-    final controller = StreamController<List<UserData>>();
-    _api.streamAllUsers(currentUserId).listen((users) {
-      controller.add(users);
-    });
-    return controller;
+  Stream<List<UserData>> streamAllUsers(String currentUserId) {
+    return _api.streamAllUsers(currentUserId);
   }
 
   _getChatroomId(GetChatroomIdEvent event, Emitter<ChatState> emit) async {

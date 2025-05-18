@@ -27,14 +27,9 @@ class _AllUserScreenState extends State<AllUserScreen> {
       StreamController<DateTime>.broadcast();
   Timer? _timer;
 
-  late final StreamController<List<UserData>> _userStreamController;
-
   @override
   void initState() {
     super.initState();
-    _userStreamController = _chatBloc.streamAllUsers(
-      FirebaseAuth.instance.currentUser!.uid,
-    );
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!_timeStreamController.isClosed) {
@@ -47,7 +42,6 @@ class _AllUserScreenState extends State<AllUserScreen> {
   void dispose() {
     _timer?.cancel();
     _timeStreamController.close();
-    _userStreamController.close();
     super.dispose();
   }
 
@@ -61,7 +55,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
 
   Widget _buildView() {
     return StreamBuilder<List<UserData>>(
-      stream: _userStreamController.stream,
+      stream: _chatBloc.streamAllUsers(FirebaseAuth.instance.currentUser!.uid),
       builder: (context, userSnapshot) {
         if (userSnapshot.connectionState == ConnectionState.waiting &&
             !userSnapshot.hasData) {

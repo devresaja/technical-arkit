@@ -13,11 +13,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc() : super(ProfileInitial());
 
-  StreamController<UserData> streamUserProfile(String userId) {
-    final controller = StreamController<UserData>();
-    _api.streamUserById(userId).listen((userData) {
-      controller.add(userData);
-    });
-    return controller;
+  Stream<UserData> streamUserProfile(String userId) {
+    return _api.streamUserById(userId);
   }
 }

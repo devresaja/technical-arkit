@@ -36,14 +36,12 @@ class UserProfileWidget extends StatefulWidget {
 
 class _UserProfileWidgetState extends State<UserProfileWidget> {
   final _profileBloc = ProfileBloc();
-  late final StreamController<UserData> _userStreamController;
   late final StreamController<DateTime> _timeStreamController;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _userStreamController = _profileBloc.streamUserProfile(widget.userId);
     _timeStreamController = StreamController<DateTime>.broadcast();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!_timeStreamController.isClosed) {
@@ -56,7 +54,6 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
   void dispose() {
     _timer?.cancel();
     _timeStreamController.close();
-    _userStreamController.close();
     super.dispose();
   }
 
@@ -74,7 +71,7 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                     ? null
                     : MediaQuery.sizeOf(context).width * 0.6,
             child: StreamBuilder<UserData>(
-              stream: _userStreamController.stream,
+              stream: _profileBloc.streamUserProfile(widget.userId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting &&
                     !snapshot.hasData) {
