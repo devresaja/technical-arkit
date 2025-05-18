@@ -110,7 +110,6 @@ class _ChatScreenState extends State<ChatScreen> {
         return ChatRoomItem(
           chatRoomId: chatRoom.id,
           avatarUrl: chatRoom.otherUser.avatar,
-          isOnline: chatRoom.otherUser.isOnline,
           name: chatRoom.otherUser.name,
           lastMessage: chatRoom.lastMessage,
           lastMessageTime: chatRoom.lastMessageTime!,

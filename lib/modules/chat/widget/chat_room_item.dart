@@ -8,7 +8,6 @@ import 'package:technical_artkit/widget/text/text_widget.dart';
 class ChatRoomItem extends StatelessWidget {
   final String chatRoomId;
   final String? avatarUrl;
-  final bool isOnline;
   final String name;
   final String lastMessage;
   final DateTime lastMessageTime;
@@ -18,7 +17,6 @@ class ChatRoomItem extends StatelessWidget {
     super.key,
     required this.chatRoomId,
     required this.avatarUrl,
-    required this.isOnline,
     required this.name,
     required this.lastMessage,
     required this.lastMessageTime,
@@ -37,29 +35,12 @@ class ChatRoomItem extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                Stack(
-                  children: [
-                    CachedImage(
-                      key: Key(chatRoomId),
-                      imageUrl: avatarUrl,
-                      isCircle: true,
-                      height: 40,
-                      width: 40,
-                    ),
-                    if (isOnline)
-                      Positioned(
-                        right: 1,
-                        bottom: 1,
-                        child: Container(
-                          width: 11,
-                          height: 11,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                  ],
+                CachedImage(
+                  key: Key(chatRoomId),
+                  imageUrl: avatarUrl,
+                  isCircle: true,
+                  height: 40,
+                  width: 40,
                 ),
                 divideW12,
                 Expanded(
