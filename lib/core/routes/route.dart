@@ -5,6 +5,7 @@ import 'package:technical_artkit/modules/auth/screen/login_screen.dart';
 import 'package:technical_artkit/modules/chat/screen/all_user_screen.dart';
 import 'package:technical_artkit/modules/chat/screen/chat_screen.dart';
 import 'package:technical_artkit/modules/chat/screen/chat_detail_screen.dart';
+import 'package:technical_artkit/modules/profile/screen/profile_screen.dart';
 
 class RouteConfig {
   static String routeName = '';
@@ -26,6 +27,9 @@ class RouteConfig {
 
       case AllUserScreen.routeName:
         return goTo(const AllUserScreen());
+
+      case ProfileScreen.path:
+        return goTo(ProfileScreen(argument: argument as ProfileArgument));
 
       default:
         return goTo(const NotFoundScreen());

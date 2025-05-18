@@ -51,7 +51,6 @@ class AppLifecycleService with WidgetsBindingObserver {
     try {
       final updateData = <String, dynamic>{'is_online': isOnline};
 
-      // Add last online timestamp when user goes offline
       if (!isOnline) {
         updateData['last_online'] = FieldValue.serverTimestamp();
       }

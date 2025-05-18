@@ -6,6 +6,7 @@ import 'package:technical_artkit/core/theme/app_color.dart';
 import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
 import 'package:technical_artkit/modules/chat/model/chat_message.dart';
 import 'package:technical_artkit/modules/profile/components/user_profile_widget.dart';
+import 'package:technical_artkit/modules/profile/screen/profile_screen.dart';
 import 'package:technical_artkit/shared/model/user_data.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
 import 'package:technical_artkit/widget/page/view_handler_widget.dart';
@@ -73,6 +74,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           userId: widget.argument.otherUser.userId,
           imageSize: 30,
           fontWeight: FontWeight.w500,
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              ProfileScreen.path,
+              arguments: ProfileArgument(
+                userId: widget.argument.otherUser.userId,
+              ),
+            );
+          },
         ),
       ),
       body: Column(
