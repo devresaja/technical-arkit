@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 import 'package:technical_artkit/modules/chat/model/chatroom.dart';
@@ -66,19 +68,91 @@ class ChatApi {
     }
   }
 
-  Stream<List<ChatMessage>> streamChatMessages(String chatroomId) {
-    return _firestore
+  Stream<List<ChatMessage>> streamChatMessages({
+    required String chatroomId,
+    required String currentUserId,
+  }) {
+    final messagesRef = _firestore
         .collection('chatrooms')
         .doc(chatroomId)
         .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) =>
-              snapshot.docs
-                  .map((doc) => ChatMessage.fromJson(doc.data()))
-                  .toList(),
-        );
+        .orderBy('timestamp', descending: true);
+
+    return messagesRef.snapshots().map((snapshot) {
+      final messages =
+          snapshot.docs.map((doc) {
+            final data = doc.data();
+
+            data['id'] = doc.id;
+
+            final chatMessage = ChatMessage.fromJson(data);
+
+            _markMessageAsRead(chatroomId, doc.id, currentUserId);
+
+            return chatMessage;
+          }).toList();
+
+      return messages;
+    });
+  }
+
+  Future<Either<String, void>> markMessagesAsRead(
+    String chatroomId,
+    String currentUserId,
+  ) async {
+    try {
+      final messagesRef = _firestore
+          .collection('chatrooms')
+          .doc(chatroomId)
+          .collection('messages');
+
+      final querySnapshot =
+          await messagesRef
+              .where('sender_id', isNotEqualTo: currentUserId)
+              .get();
+
+      final batch = _firestore.batch();
+
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+        final List<dynamic> readBy = List<dynamic>.from(data['readBy'] ?? []);
+
+        if (!readBy.contains(currentUserId)) {
+          readBy.add(currentUserId);
+          batch.update(doc.reference, {'readBy': readBy});
+          log('masuk mark');
+        }
+      }
+
+      await batch.commit();
+
+      return const Right(null);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<void> _markMessageAsRead(
+    String chatroomId,
+    String messageId,
+    String userId,
+  ) async {
+    final messageRef = _firestore
+        .collection('chatrooms')
+        .doc(chatroomId)
+        .collection('messages')
+        .doc(messageId);
+
+    final doc = await messageRef.get();
+    if (!doc.exists) return;
+
+    final data = doc.data()!;
+    final List<dynamic> readBy = List<dynamic>.from(data['readBy'] ?? []);
+
+    if (!readBy.contains(userId)) {
+      readBy.add(userId);
+      await messageRef.update({'readBy': readBy});
+    }
   }
 
   Stream<List<ChatRoom>> streamChatrooms(String userId) {
@@ -187,6 +261,13 @@ class ChatApi {
 
       final userData = userResult.right;
 
+      // Get chatroom to get participants
+      final chatroomDoc =
+          await _firestore.collection('chatrooms').doc(chatroomId).get();
+      final List<String> participants = List<String>.from(
+        chatroomDoc.data()?['participants'] ?? [],
+      );
+
       final messageRef = _firestore
           .collection('chatrooms')
           .doc(chatroomId)
@@ -199,6 +280,8 @@ class ChatApi {
         'timestamp': FieldValue.serverTimestamp(),
         'read': false,
         'type': 'text',
+        'readBy': [senderId], // Sender has read their own message
+        'participants': participants,
       });
 
       final updateResult = await _updateChatroom(chatroomId, content);

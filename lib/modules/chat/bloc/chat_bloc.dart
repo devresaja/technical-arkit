@@ -44,8 +44,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Stream<List<ChatMessage>> streamChatMessage(String chatroomId) {
-    return _api.streamChatMessages(chatroomId);
+  Stream<List<ChatMessage>> streamChatMessage(
+    String chatroomId,
+    String currentUserId,
+  ) {
+    return _api.streamChatMessages(
+      chatroomId: chatroomId,
+      currentUserId: currentUserId,
+    );
   }
 
   _sendChat(SendChatEvent event, Emitter<ChatState> emit) async {

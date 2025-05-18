@@ -127,7 +127,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     }
 
     return StreamBuilder<List<ChatMessage>>(
-      stream: _chatBloc.streamChatMessage(_chatroomId!),
+      stream: _chatBloc.streamChatMessage(_chatroomId!, _currentUserId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting &&
             !snapshot.hasData) {
@@ -165,6 +165,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           senderName: message.sender.name,
           content: message.content,
           timestamp: message.timestamp!,
+          isRead: message.isRead,
         );
       },
     );

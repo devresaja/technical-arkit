@@ -6,16 +6,18 @@ class ChatMessage {
   final UserData sender;
   final String content;
   final DateTime? timestamp;
-  final bool read;
   final String type;
+  final List<String> readBy;
+  final List<String> participants;
 
   ChatMessage({
     required this.id,
     required this.sender,
     required this.content,
     this.timestamp,
-    required this.read,
     required this.type,
+    required this.readBy,
+    required this.participants,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -38,8 +40,9 @@ class ChatMessage {
               : raw is Timestamp
               ? raw.toDate()
               : null,
-      read: json['read'] ?? false,
       type: json['type'] ?? 'text',
+      readBy: List<String>.from(json['readBy'] ?? []),
+      participants: List<String>.from(json['participants'] ?? []),
     );
   }
 
@@ -48,7 +51,12 @@ class ChatMessage {
     'sender': sender.toJson(),
     'content': content,
     'timestamp': timestamp,
-    'read': read,
     'type': type,
+    'readBy': readBy,
+    'participants': participants,
   };
+
+  bool get isRead =>
+      participants.isNotEmpty &&
+      participants.every((userId) => readBy.contains(userId));
 }

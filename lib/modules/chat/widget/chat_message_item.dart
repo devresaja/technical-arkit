@@ -9,6 +9,7 @@ class ChatMessageItem extends StatelessWidget {
   final String senderName;
   final String content;
   final DateTime timestamp;
+  final bool isRead;
 
   const ChatMessageItem({
     super.key,
@@ -16,6 +17,7 @@ class ChatMessageItem extends StatelessWidget {
     required this.senderName,
     required this.content,
     required this.timestamp,
+    required this.isRead,
   });
 
   @override
@@ -57,12 +59,21 @@ class ChatMessageItem extends StatelessWidget {
           Padding(
             padding:
                 isMe
-                    ? const EdgeInsets.only(right: 12, top: 4)
-                    : const EdgeInsets.only(left: 12, top: 4),
-            child: TextWidget(
-              DateFormat.jm().format(timestamp),
-              fontSize: 10,
-              color: AppColor.black,
+                    ? const EdgeInsets.only(right: 12, top: 6)
+                    : const EdgeInsets.only(left: 12, top: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isRead && isMe)
+                  Icon(Icons.check, color: AppColor.primary, size: 18),
+                divideW4,
+                TextWidget(
+                  DateFormat.jm().format(timestamp),
+                  fontSize: 12,
+                  color: AppColor.black,
+                ),
+              ],
             ),
           ),
         ],
