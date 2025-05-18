@@ -146,7 +146,6 @@ Future<dynamic> showConfirmationDialog({
                     Flexible(
                       child: CustomButton(
                         color: Colors.red,
-                        borderColor: Colors.red,
                         textColor: Colors.white,
                         text: cancelText ?? 'Close',
                         fontSize: 12,
@@ -160,7 +159,7 @@ Future<dynamic> showConfirmationDialog({
                   if (!hideCancel) divideW10,
                   Flexible(
                     child: CustomButton(
-                      textColor: Colors.black,
+                      textColor: Colors.white,
                       color: AppColor.primary,
                       text: okText ?? 'Yes',
                       fontSize: 12,

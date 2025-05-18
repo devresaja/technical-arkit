@@ -8,6 +8,7 @@ import 'package:technical_artkit/modules/chat/bloc/chat_bloc.dart';
 import 'package:technical_artkit/modules/chat/model/chatroom.dart';
 import 'package:technical_artkit/modules/chat/screen/all_user_screen.dart';
 import 'package:technical_artkit/modules/chat/screen/chat_detail_screen.dart';
+import 'package:technical_artkit/modules/profile/screen/profile_screen.dart';
 import 'package:technical_artkit/utils/view_utils.dart';
 import 'package:technical_artkit/widget/image/cached_image.dart';
 import 'package:technical_artkit/widget/text/text_widget.dart';
@@ -32,7 +33,24 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: TextWidget('Chat')),
+      appBar: AppBar(
+        title: TextWidget('Chat'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                ProfileScreen.path,
+                arguments: ProfileArgument(
+                  userId: FirebaseAuth.instance.currentUser!.uid,
+                  isMe: true,
+                ),
+              );
+            },
+            icon: Icon(Icons.account_circle, size: 28),
+          ),
+        ],
+      ),
       body: BlocProvider(
         create: (context) => _chatBloc,
         child: BlocBuilder<ChatBloc, ChatState>(

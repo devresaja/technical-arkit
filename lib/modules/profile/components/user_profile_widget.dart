@@ -213,58 +213,9 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
 
   Widget _buildUserProfileWidget(UserData user) {
     if (widget.isVertical) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            children: [
-              CachedImage(
-                imageUrl: user.avatar,
-                isCircle: true,
-                height: widget.imageSize,
-                width: widget.imageSize,
-              ),
-              if (widget.showOnlineStatus && user.isOnline)
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: widget.imageSize * 0.3,
-                    height: widget.imageSize * 0.3,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          divide8,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextWidget(
-                user.name,
-                weight: widget.fontWeight,
-                fontSize: widget.fontSize,
-              ),
-              if (widget.showOnlineStatus)
-                TextWidget(
-                  user.isOnline ? 'Online' : formatLastOnline(user.lastOnline),
-                  fontSize: widget.fontSize - 2,
-                  color: user.isOnline ? Colors.green : Colors.grey,
-                ),
-            ],
-          ),
-        ],
-      );
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Stack(
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             CachedImage(
               imageUrl: user.avatar,
@@ -272,20 +223,38 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
               height: widget.imageSize,
               width: widget.imageSize,
             ),
-            if (widget.showOnlineStatus && user.isOnline)
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  width: widget.imageSize * 0.3,
-                  height: widget.imageSize * 0.3,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                  ),
+            divide8,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextWidget(
+                  user.name,
+                  weight: widget.fontWeight,
+                  fontSize: widget.fontSize,
                 ),
-              ),
+                if (widget.showOnlineStatus)
+                  TextWidget(
+                    user.isOnline
+                        ? 'Online'
+                        : formatLastOnline(user.lastOnline),
+                    fontSize: widget.fontSize - 2,
+                    color: user.isOnline ? Colors.green : Colors.grey,
+                  ),
+              ],
+            ),
           ],
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CachedImage(
+          imageUrl: user.avatar,
+          isCircle: true,
+          height: widget.imageSize,
+          width: widget.imageSize,
         ),
         divideW12,
         Flexible(
