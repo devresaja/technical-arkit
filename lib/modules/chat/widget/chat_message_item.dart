@@ -35,7 +35,7 @@ class ChatMessageItem extends StatelessWidget {
                     : const EdgeInsets.only(top: 12, left: 8),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isMe ? Colors.blue : Colors.grey.shade400,
+              color: isMe ? AppColor.primary : Colors.grey.shade400,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Column(
